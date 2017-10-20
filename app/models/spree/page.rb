@@ -18,11 +18,12 @@ class Spree::Page < ActiveRecord::Base
 
   before_save :update_positions_and_slug
 
-  translates :title, :body, :slug, :layout, :foreign_link, :meta_keywords, :meta_title, :meta_description,
-             fallbacks_for_empty_translations: true
+  if if defined?(SpreeGlobalize::Translatable) == 'constant' && SpreeGlobalize::Translatable.class == Class
+    translates :title, :body, :slug, :layout, :foreign_link, :meta_keywords, :meta_title, :meta_description,
+               fallbacks_for_empty_translations: true
 
-  include SpreeGlobalize::Translatable
-
+    include SpreeGlobalize::Translatable
+  end
   def initialize(*args)
     super(*args)
     last_page = Spree::Page.last
